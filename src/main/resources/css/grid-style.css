@@ -1,0 +1,37 @@
+.root {
+    -fx-background-image: url("/images/pastel.jpg");
+    -fx-background-size: 600 400;
+    -fx-background-position: bottom bottom;
+}
+
+
+.table-view{
+    -fx-background-color: transparent;
+}
+
+.table-column{
+    -fx-background-color: transparent;
+}
+
+.table-row-cell{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: transparent;
+}
+
+.table-view .filler{
+    -fx-background-color: transparent;
+}
+
+#hyperLink{
+    -fx-text-fill: WHITE;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+}
+.list-view {
+    -fx-background-color: transparent;
+}
