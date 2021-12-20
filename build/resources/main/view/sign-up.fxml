@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -26,7 +27,7 @@
                 </ImageView>
             </children>
         </AnchorPane>
-        <AnchorPane prefHeight="400.0" prefWidth="407.0">
+        <AnchorPane prefHeight="400.0" prefWidth="407.0" style="-fx-background-color: FEFFDE;">
             <children>
                 <Label layoutX="32.0" layoutY="98.0" text="First Name" textFill="DIMGRAY">
                     <font>
@@ -48,14 +49,17 @@
                         <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="tfFirstName" layoutX="119.0" layoutY="93.0" prefHeight="30.0" prefWidth="186.0" promptText="First Name" />
-                <TextField fx:id="tfLastName" layoutX="119.0" layoutY="141.0" prefHeight="30.0" prefWidth="186.0" promptText="Last Name" />
-                <TextField fx:id="tfUserNameEmail" layoutX="119.0" layoutY="185.0" prefHeight="30.0" prefWidth="186.0" promptText="Email" />
-                <PasswordField fx:id="pfPassword" layoutX="119.0" layoutY="235.0" prefHeight="26.0" prefWidth="186.0" promptText="Password" />
+                <TextField fx:id="tfFirstName" layoutX="119.0" layoutY="93.0" opacity="0.5" prefHeight="30.0" prefWidth="186.0" promptText="First Name" />
+                <TextField fx:id="tfLastName" layoutX="119.0" layoutY="141.0" opacity="0.5" prefHeight="30.0" prefWidth="186.0" promptText="Last Name" />
+                <TextField fx:id="tfUserNameEmail" layoutX="119.0" layoutY="185.0" opacity="0.5" prefHeight="30.0" prefWidth="186.0" promptText="Email" />
+                <PasswordField fx:id="pfPassword" layoutX="119.0" layoutY="235.0" opacity="0.5" prefHeight="26.0" prefWidth="186.0" promptText="Password" />
                 <Button fx:id="btnSignUp" layoutX="168.0" layoutY="292.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="81.0" style="-fx-background-color: #BFCF57;" stylesheets="@../css/buttons-style.css" text="Sign Up" textFill="WHITE">
                     <font>
                         <Font name="Bell MT Bold" size="16.0" />
                     </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                 </Button>
                 <Label layoutX="32.0" layoutY="365.0" prefHeight="18.0" prefWidth="139.0" text="Already a member?" textFill="#7a852e">
                     <font>
@@ -66,6 +70,9 @@
                     <font>
                         <Font name="Bell MT Bold" size="12.0" />
                     </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                 </Button>
             </children>
         </AnchorPane>
