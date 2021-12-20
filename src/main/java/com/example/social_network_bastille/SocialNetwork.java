@@ -3,6 +3,7 @@ package com.example.social_network_bastille;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,6 +15,8 @@ public class SocialNetwork extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("bastille-app");
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.getIcons().add(new Image("/images/app.png"));
         stage.show();
     }
 
