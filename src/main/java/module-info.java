@@ -9,4 +9,6 @@ module com.example.social_network_bastille {
 
     opens com.example.social_network_bastille to javafx.fxml;
     exports com.example.social_network_bastille;
+    opens com.example.social_network_bastille.controller.graphic to javafx.fxml;
+    exports com.example.social_network_bastille.controller.graphic;
 }
