@@ -1,10 +1,15 @@
 package com.example.social_network_bastille.service.implementation;
 
 import com.example.social_network_bastille.domain.FriendRequest;
+import com.example.social_network_bastille.domain.Status;
 import com.example.social_network_bastille.domain.Tuple;
 import com.example.social_network_bastille.domain.validators.IllegalFriendshipException;
 import com.example.social_network_bastille.repository.Repository;
 import com.example.social_network_bastille.service.FriendRequestServiceInterface;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 public class FriendRequestService implements FriendRequestServiceInterface {
@@ -37,5 +42,14 @@ public class FriendRequestService implements FriendRequestServiceInterface {
     @Override
     public FriendRequest updateFriendRequest(FriendRequest friendRequest) {
         return friendRequestRepository.update(friendRequest);
+    }
+
+    @Override
+    public List<FriendRequest> getReceivedFriendRequests(Long secondID) {
+        return StreamSupport
+                .stream(friendRequestRepository.findAll().spliterator(), false)
+                .filter(friendRequest -> friendRequest.getId().getId2().equals(secondID)
+                        && friendRequest.getStatus().equals(Status.PENDING))
+                .collect(Collectors.toList());
     }
 }

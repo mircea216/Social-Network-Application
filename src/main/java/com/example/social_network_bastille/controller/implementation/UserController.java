@@ -36,4 +36,9 @@ public class UserController implements UserControllerInterface {
     public User getUserByID(Long id) {
         return userService.getUserByID(id);
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userService.getUserByEmail(email);
+    }
 }

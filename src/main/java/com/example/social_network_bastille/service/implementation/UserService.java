@@ -8,6 +8,8 @@ import com.example.social_network_bastille.repository.Repository;
 import com.example.social_network_bastille.service.UserServiceInterface;
 
 import java.util.ConcurrentModificationException;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 public class UserService implements UserServiceInterface {
@@ -48,5 +50,14 @@ public class UserService implements UserServiceInterface {
     @Override
     public User getUserByID(Long id) {
         return userRepository.findOne(id);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return StreamSupport
+                .stream(userRepository.findAll().spliterator(), false)
+                .filter(user -> user.getAccount().getEmail().equals(email))
+                .collect(Collectors.toList())
+                .get(0);
     }
 }
