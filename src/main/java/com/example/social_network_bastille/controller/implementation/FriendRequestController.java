@@ -6,6 +6,8 @@ import com.example.social_network_bastille.domain.Tuple;
 import com.example.social_network_bastille.domain.validators.IllegalFriendshipException;
 import com.example.social_network_bastille.service.implementation.FriendRequestService;
 
+import java.util.List;
+
 public class FriendRequestController implements FriendRequestControllerInterface {
     private final FriendRequestService friendRequestService;
 
@@ -36,5 +38,10 @@ public class FriendRequestController implements FriendRequestControllerInterface
     @Override
     public FriendRequest updateFriendRequest(FriendRequest friendRequest) {
         return friendRequestService.updateFriendRequest(friendRequest);
+    }
+
+    @Override
+    public List<FriendRequest> getReceivedFriendRequests(Long secondID) {
+        return friendRequestService.getReceivedFriendRequests(secondID);
     }
 }
