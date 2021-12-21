@@ -20,6 +20,7 @@ public class LogInController implements Initializable {
     private Button btnSignUp;
     @FXML
     private PasswordField pfPassword;
+    private static String loggedUserEmail;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -27,10 +28,15 @@ public class LogInController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 DatabaseUserConnection.logInUser(event, tfUsername.getText(), pfPassword.getText());
+                loggedUserEmail = tfUsername.getText();
             }
         });
 
         btnSignUp.setOnAction(event -> DatabaseUserConnection.
                 changeScene(event, "/view/sign-up.fxml", null));
+    }
+
+    public static String getLoggedUserEmail() {
+        return loggedUserEmail;
     }
 }
