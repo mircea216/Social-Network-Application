@@ -32,6 +32,8 @@ public class ApplicationController implements Initializable {
         Image searchImage = new Image(inputSearch, 30, 30, true, true);
         btnSearcher.setBackground(Background.EMPTY);
         btnSearcher.setGraphic(new ImageView(searchImage));
+        btnSearcher.setOnAction((event -> DatabaseUserConnection.changeScene(event,
+                        "/view/found-user.fxml", null)));
 
         InputStream inputFriends = getClass().getResourceAsStream("/images/friends.png");
         assert inputFriends != null;
