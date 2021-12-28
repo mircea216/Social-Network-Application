@@ -52,4 +52,14 @@ public class FriendRequestService implements FriendRequestServiceInterface {
                         && friendRequest.getStatus().equals(Status.PENDING))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<FriendRequest> getSentFriendRequests(Long firstID) {
+        return StreamSupport
+                .stream(friendRequestRepository.findAll().spliterator(), false)
+                .filter(friendRequest -> friendRequest.getId().getId1().equals(firstID)
+                        && friendRequest.getStatus().equals(Status.PENDING))
+                .collect(Collectors.toList());
+
+    }
 }

@@ -113,7 +113,6 @@ public class ReceivedFriendRequests implements Initializable {
 
     public void manageRequests() {
         ReceivedFriendRequestDTO friendRequestDTO = tvReceivedRequests.getSelectionModel().getSelectedItem();
-        System.out.println(friendRequestDTO.getFrom());
         Button confirm = friendRequestDTO.getConfirm();
         handleConfirmRequest(friendRequestDTO, confirm);
         handleDeclineRequest(friendRequestDTO);

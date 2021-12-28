@@ -18,4 +18,6 @@ public interface FriendRequestServiceInterface {
     FriendRequest updateFriendRequest(FriendRequest friendRequest);
 
     List<FriendRequest> getReceivedFriendRequests(Long secondID);
+
+    List<FriendRequest> getSentFriendRequests(Long firstID);
 }

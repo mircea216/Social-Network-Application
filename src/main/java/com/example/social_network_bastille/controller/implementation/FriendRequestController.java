@@ -44,4 +44,9 @@ public class FriendRequestController implements FriendRequestControllerInterface
     public List<FriendRequest> getReceivedFriendRequests(Long secondID) {
         return friendRequestService.getReceivedFriendRequests(secondID);
     }
+
+    @Override
+    public List<FriendRequest> getSentFriendRequests(Long firstID) {
+        return friendRequestService.getSentFriendRequests(firstID);
+    }
 }

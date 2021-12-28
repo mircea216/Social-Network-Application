@@ -35,7 +35,8 @@ public class FriendRequestManagementController implements Initializable {
                 true, true);
         btnSentFriendRequests.setBackground(Background.EMPTY);
         btnSentFriendRequests.setGraphic(new ImageView(sentFriendRequestImage));
-
+        btnSentFriendRequests.setOnAction(event -> DatabaseUserConnection.changeScene(event,
+                "/view/sent-friend-requests.fxml", null));
         InputStream inputReceivedFriendRequest = getClass().getResourceAsStream("/images/received.png");
         assert inputReceivedFriendRequest != null;
         Image ReceivedFriendRequestImage = new Image(inputReceivedFriendRequest, 40, 40,
