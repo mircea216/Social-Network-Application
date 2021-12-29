@@ -39,4 +39,5 @@ public class LogInController implements Initializable {
     public static String getLoggedUserEmail() {
         return loggedUserEmail;
     }
+
 }
