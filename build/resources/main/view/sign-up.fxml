@@ -11,18 +11,22 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.social_network_bastille.controller.graphic.SignUpController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.social_network_bastille.controller.graphic.SignUpController">
     <children>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #BFCF57;">
             <children>
-                <Label alignment="CENTER" layoutX="44.0" layoutY="298.0" text="- bastille -" textAlignment="CENTER" textFill="#7a852e">
+                <Label alignment="CENTER" layoutX="44.0" layoutY="298.0" text="- bastille -" textAlignment="CENTER"
+                       textFill="#7a852e">
                     <font>
-                        <Font name="Bell MT Bold" size="24.0" />
+                        <Font name="Bell MT Bold" size="24.0"/>
                     </font>
                 </Label>
-                <ImageView fitHeight="150.0" fitWidth="186.0" layoutX="29.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="150.0" fitWidth="186.0" layoutX="29.0" layoutY="26.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
-                        <Image url="@../images/icarus.png" />
+                        <Image url="@../images/icarus.png"/>
                     </image>
                 </ImageView>
             </children>
@@ -31,48 +35,57 @@
             <children>
                 <Label layoutX="32.0" layoutY="98.0" text="First Name" textFill="DIMGRAY">
                     <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="14.0"/>
                     </font>
                 </Label>
                 <Label layoutX="32.0" layoutY="146.0" lineSpacing="10.0" text="Last Name" textFill="DIMGRAY">
                     <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="14.0"/>
                     </font>
                 </Label>
                 <Label layoutX="33.0" layoutY="190.0" text="Email" textFill="DIMGRAY">
                     <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="14.0"/>
                     </font>
                 </Label>
                 <Label layoutX="33.0" layoutY="238.0" text="Password" textFill="DIMGRAY">
                     <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="14.0"/>
                     </font>
                 </Label>
-                <TextField fx:id="tfFirstName" layoutX="119.0" layoutY="93.0" opacity="0.5" prefHeight="30.0" prefWidth="186.0" promptText="First Name" />
-                <TextField fx:id="tfLastName" layoutX="119.0" layoutY="141.0" opacity="0.5" prefHeight="30.0" prefWidth="186.0" promptText="Last Name" />
-                <TextField fx:id="tfUserNameEmail" layoutX="119.0" layoutY="185.0" opacity="0.5" prefHeight="30.0" prefWidth="186.0" promptText="Email" />
-                <PasswordField fx:id="pfPassword" layoutX="119.0" layoutY="235.0" opacity="0.5" prefHeight="26.0" prefWidth="186.0" promptText="Password" />
-                <Button fx:id="btnSignUp" layoutX="168.0" layoutY="292.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="81.0" style="-fx-background-color: #BFCF57;" stylesheets="@../css/buttons-style.css" text="Sign Up" textFill="WHITE">
+                <TextField fx:id="tfFirstName" layoutX="119.0" layoutY="93.0" opacity="0.5" prefHeight="30.0"
+                           prefWidth="186.0" promptText="First Name"/>
+                <TextField fx:id="tfLastName" layoutX="119.0" layoutY="141.0" opacity="0.5" prefHeight="30.0"
+                           prefWidth="186.0" promptText="Last Name"/>
+                <TextField fx:id="tfUserNameEmail" layoutX="119.0" layoutY="185.0" opacity="0.5" prefHeight="30.0"
+                           prefWidth="186.0" promptText="Email"/>
+                <PasswordField fx:id="pfPassword" layoutX="119.0" layoutY="235.0" opacity="0.5" prefHeight="26.0"
+                               prefWidth="186.0" promptText="Password"/>
+                <Button fx:id="btnSignUp" layoutX="168.0" layoutY="292.0" mnemonicParsing="false" prefHeight="34.0"
+                        prefWidth="81.0" style="-fx-background-color: #BFCF57;" stylesheets="@../css/buttons-style.css"
+                        text="Sign Up" textFill="WHITE">
                     <font>
-                        <Font name="Bell MT Bold" size="16.0" />
+                        <Font name="Bell MT Bold" size="16.0"/>
                     </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
                 </Button>
-                <Label layoutX="32.0" layoutY="365.0" prefHeight="18.0" prefWidth="139.0" text="Already a member?" textFill="#7a852e">
+                <Label layoutX="32.0" layoutY="365.0" prefHeight="18.0" prefWidth="139.0" text="Already a member?"
+                       textFill="#7a852e">
                     <font>
-                        <Font name="Arial Rounded MT Bold" size="13.0" />
+                        <Font name="Arial Rounded MT Bold" size="13.0"/>
                     </font>
                 </Label>
-                <Button fx:id="btnLogIn" layoutX="169.0" layoutY="363.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="82.0" style="-fx-background-color: #BFCF57;" stylesheets="@../css/buttons-style.css" text="- Login - " textFill="WHITE">
+                <Button fx:id="btnLogIn" layoutX="169.0" layoutY="363.0" mnemonicParsing="false" prefHeight="22.0"
+                        prefWidth="82.0" style="-fx-background-color: #BFCF57;" stylesheets="@../css/buttons-style.css"
+                        text="- Login - " textFill="WHITE">
                     <font>
-                        <Font name="Bell MT Bold" size="12.0" />
+                        <Font name="Bell MT Bold" size="12.0"/>
                     </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="HAND"/>
+                    </cursor>
                 </Button>
             </children>
         </AnchorPane>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: FAEBE0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.social_network_bastille.controller.graphic.UserDetailsController">
+    <children>
+        <AnchorPane prefHeight="400.0" prefWidth="112.0" style="-fx-background-color: ECE7B4;">
+            <children>
+                <AnchorPane layoutX="-18.0" layoutY="91.0" prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="btnBack" layoutX="13.0" layoutY="16.0" mnemonicParsing="false" stylesheets="@../css/button-yellow-style.css">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnCloseTable" layoutX="82.0" layoutY="345.0" mnemonicParsing="false" stylesheets="@../css/button-yellow-style.css" text="Close">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="sceneToFade" prefHeight="400.0" prefWidth="369.0">
+            <children>
+                <Label fx:id="labelUser" alignment="CENTER" layoutX="56.0" layoutY="178.0" prefHeight="43.0" prefWidth="285.0" text="User's profile" textFill="#171b36">
+                    <font>
+                        <Font name="Bell MT Italic" size="35.0" />
+                    </font>
+                </Label>
+                <Button fx:id="btnSeeFriends" layoutX="155.0" layoutY="228.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: EBD8B7;" stylesheets="@../css/button-yellow-style.css" text="See Friends">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+                <Button fx:id="btnAddDelete" layoutX="41.0" layoutY="228.0" mnemonicParsing="false" onAction="#onAddDeleteButtonClick" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: EBD8B7;" stylesheets="@../css/button-yellow-style.css" text="Add">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+                <Button fx:id="btnMessage" layoutX="268.0" layoutY="228.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: EBD8B7;" stylesheets="@../css/button-yellow-style.css" text="Message">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <ImageView fx:id="imgViewProfilePicture" fitHeight="158.0" fitWidth="218.0" layoutX="131.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
+            <TableView fx:id="tvFriends" layoutX="-3.0" prefHeight="400.0" prefWidth="403.0" stylesheets="@../css/table-format-initializer.css">
+              <columns>
+                <TableColumn fx:id="firstNameCol" minWidth="200.0" prefWidth="200.0" text="First Name" />
+                <TableColumn fx:id="lastNameCol" minWidth="200.0" prefWidth="200.0" text="Last Name" />
+              </columns>
+            </TableView>
+            </children>
+        </AnchorPane>
+    </children>
+</HBox>
