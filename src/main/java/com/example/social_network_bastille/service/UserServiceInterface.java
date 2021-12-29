@@ -14,5 +14,5 @@ public interface UserServiceInterface {
 
     User getUserByID(Long id);
 
-    public User getUserByEmail(String email);
+    User getUserByEmail(String email);
 }

@@ -6,12 +6,12 @@ import com.example.social_network_bastille.controller.graphic.alert.AlertUtil;
 import com.example.social_network_bastille.controller.implementation.FriendRequestController;
 import com.example.social_network_bastille.controller.implementation.UserController;
 import com.example.social_network_bastille.domain.FriendRequest;
-import com.example.social_network_bastille.domain.Status;
 import com.example.social_network_bastille.domain.Tuple;
 import com.example.social_network_bastille.domain.User;
-import com.example.social_network_bastille.domain.dto.ReceivedFriendRequestDTO;
+import com.example.social_network_bastille.domain.dto.SentFriendRequestDTO;
 import com.example.social_network_bastille.domain.validators.FriendRequestValidator;
 import com.example.social_network_bastille.domain.validators.FriendshipValidator;
+import com.example.social_network_bastille.domain.validators.IllegalFriendshipException;
 import com.example.social_network_bastille.domain.validators.UserValidator;
 import com.example.social_network_bastille.repository.Repository;
 import com.example.social_network_bastille.repository.database.FriendRequestDatabaseRepository;
@@ -40,35 +40,30 @@ import javafx.scene.text.FontWeight;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-public class ReceivedFriendRequests implements Initializable {
+public class SentFriendRequests implements Initializable {
     private static final String URL = "jdbc:postgresql://localhost:5432/social_network";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "Diamondfarm21";
-    private static final String FROM = "from";
-    private static final String DATE = "date";
-    private static final String CONFIRM = "confirm";
-    private static final String CANCEL = "cancel";
     private static final String ALIGNMENT_CENTER = "-fx-alignment: CENTER;";
+    public static final String TO_WHOM = "toWhom";
+    public static final String DATE = "date";
+    public static final String CANCEL = "cancel";
+
 
     @FXML
     private Button btnShow;
     @FXML
-    private Button btnBackReceivedRequests;
+    private TableColumn<SentFriendRequestDTO, String> colToWhom;
     @FXML
-    private TableView<ReceivedFriendRequestDTO> tvReceivedRequests;
+    private TableColumn<SentFriendRequestDTO, String> colDate;
     @FXML
-    private TableColumn<ReceivedFriendRequestDTO, String> colFrom;
+    private TableColumn<SentFriendRequestDTO, Button> colCancel;
     @FXML
-    private TableColumn<ReceivedFriendRequestDTO, String> colDate;
+    private TableView<SentFriendRequestDTO> tvSentRequests;
     @FXML
-    private TableColumn<ReceivedFriendRequestDTO, String> colConfirm;
-    @FXML
-    private TableColumn<ReceivedFriendRequestDTO, String> colCancel;
-    private final ObservableList<ReceivedFriendRequestDTO> receivedFriendRequests = FXCollections.observableArrayList();
-
+    private Button btnBackSentRequests;
 
     private final Repository<Long, User> userRepository = new UserDatabaseRepository(new UserValidator(), URL, USERNAME,
             PASSWORD);
@@ -80,16 +75,17 @@ public class ReceivedFriendRequests implements Initializable {
     private final FriendRequestService friendRequestService = new FriendRequestService(friendRequestRepository);
     private final UserControllerInterface userController = new UserController(userService);
     private final FriendRequestControllerInterface friendRequestController = new FriendRequestController(friendRequestService);
+    private final ObservableList<SentFriendRequestDTO> sentFriendRequests = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        btnBackReceivedRequests.setOnAction(event -> DatabaseUserConnection.changeScene(event,
+        btnBackSentRequests.setOnAction(event -> DatabaseUserConnection.changeScene(event,
                 "/view/friend-requests.fxml", null));
         InputStream inputBack = getClass().getResourceAsStream("/images/back.png");
         assert inputBack != null;
         Image backImage = new Image(inputBack, 30, 30, true, true);
-        btnBackReceivedRequests.setBackground(Background.EMPTY);
-        btnBackReceivedRequests.setGraphic(new ImageView(backImage));
+        btnBackSentRequests.setBackground(Background.EMPTY);
+        btnBackSentRequests.setGraphic(new ImageView(backImage));
 
         InputStream inputShow = getClass().getResourceAsStream("/images/view.png");
         assert inputShow != null;
@@ -101,68 +97,46 @@ public class ReceivedFriendRequests implements Initializable {
 
     public void showFriendRequests() {
         createTableView();
-        int size = friendRequestController.getReceivedFriendRequests(
+        int size = friendRequestController.getSentFriendRequests(
                 userController.getUserByEmail(LogInController.getLoggedUserEmail()).getId()).size();
-        tvReceivedRequests.setFixedCellSize(100);
-        tvReceivedRequests
+        tvSentRequests.setFixedCellSize(100);
+        tvSentRequests
                 .prefHeightProperty()
-                .bind(Bindings.size(tvReceivedRequests.getItems())
-                        .multiply(tvReceivedRequests.getFixedCellSize())
+                .bind(Bindings.size(tvSentRequests.getItems())
+                        .multiply(tvSentRequests.getFixedCellSize())
                         .add(size));
     }
 
     public void manageRequests() {
-        ReceivedFriendRequestDTO friendRequestDTO = tvReceivedRequests.getSelectionModel().getSelectedItem();
-        Button confirm = friendRequestDTO.getConfirm();
-        handleConfirmRequest(friendRequestDTO, confirm);
-        handleDeclineRequest(friendRequestDTO);
+        SentFriendRequestDTO friendRequestDTO = tvSentRequests.getSelectionModel().getSelectedItem();
+        Button cancel = friendRequestDTO.getCancel();
+        handleCancelRequest(friendRequestDTO, cancel);
+
     }
 
-    private void handleDeclineRequest(ReceivedFriendRequestDTO friendRequestDTO) {
-        friendRequestDTO.getCancel().setOnAction(event -> {
+    private void handleCancelRequest(SentFriendRequestDTO friendRequestDTO, Button cancel) {
+        cancel.setOnAction(event -> {
             User currentUser = userController.getUserByEmail(LogInController.getLoggedUserEmail());
-            FriendRequest friendRequest = new FriendRequest(userController.getUserByID(
-                    friendRequestDTO.getFirstID()),
-                    userController.getUserByID(currentUser.getId()),
-                    LocalDateTime.now());
-            friendRequest.setStatus(Status.REJECTED);
-            friendRequestController.updateFriendRequest(friendRequest);
-            tvReceivedRequests.getItems().remove(friendRequestDTO);
-            AlertUtil.showNotification("You declined " + friendRequestDTO.getFrom() + "'s request");
-        });
-    }
-
-    private void handleConfirmRequest(ReceivedFriendRequestDTO friendRequestDTO, Button confirm) {
-        confirm.setOnAction(event -> {
-            User currentUser = userController.getUserByEmail(LogInController.getLoggedUserEmail());
-            FriendRequest friendRequest = new FriendRequest(userController.getUserByID(
-                    friendRequestDTO.getFirstID()),
-                    userController.getUserByID(currentUser.getId()),
-                    LocalDateTime.now());
-            friendRequest.setStatus(Status.APPROVED);
-            friendRequestController.updateFriendRequest(friendRequest);
-            tvReceivedRequests.getItems().remove(friendRequestDTO);
-            AlertUtil.showNotification("You accepted " + friendRequestDTO.getFrom() + "'s request");
+            Tuple<Long, Long> id = new Tuple<>(currentUser.getId(), friendRequestDTO.getToWhomID());
+            try {
+                friendRequestController.deleteFriendRequest(id);
+            } catch (IllegalFriendshipException e) {
+                e.printStackTrace();
+            }
+            tvSentRequests.getItems().remove(friendRequestDTO);
+            AlertUtil.showNotification("You unsent your request for " + friendRequestDTO.getToWhom() + "!");
         });
     }
 
     private void createTableView() {
         User user = userController.getUserByEmail(LogInController.getLoggedUserEmail());
         for (FriendRequest friendRequest :
-                friendRequestController.getReceivedFriendRequests(user.getId())) {
-            String username = userController.getUserByID(friendRequest.getId().getId1()).getFirstName() + " " +
-                    userController.getUserByID(friendRequest.getId().getId1()).getLastName();
+                friendRequestController.getSentFriendRequests(user.getId())) {
+            String usernameToWhom = userController.getUserByID(friendRequest.getId().getId2()).getFirstName() + " " +
+                    userController.getUserByID(friendRequest.getId().getId2()).getLastName();
             String date = DateFormatter.getFormattedLocalDateTime(friendRequest.getDate());
-            Button confirm = new Button("Confirm");
             Font font = Font.font("Courier New", FontWeight.BOLD, 13);
-            confirm.setStyle("-fx-background-color: #F0BB62;" +
-                    " -fx-border-color: white; -fx-border-radius: 5;" +
-                    ALIGNMENT_CENTER +
-                    "-fx-text-fill: white");
-            confirm.setFont(font);
-            confirm.setCursor(Cursor.HAND);
-            confirm.setAlignment(Pos.CENTER);
-            Button cancel = new Button("Decline");
+            Button cancel = new Button("Cancel");
             cancel.setStyle("-fx-background-color: #F4EEA9;" +
                     " -fx-border-color: white; -fx-border-radius: 5;" +
                     ALIGNMENT_CENTER +
@@ -170,19 +144,16 @@ public class ReceivedFriendRequests implements Initializable {
             cancel.setFont(font);
             cancel.setCursor(Cursor.HAND);
             cancel.setAlignment(Pos.CENTER);
-            Long firstID = friendRequest.getId().getId1();
-            ReceivedFriendRequestDTO friendRequestDTO = new ReceivedFriendRequestDTO(username, date, confirm, cancel,
-                    firstID);
-            receivedFriendRequests.add(friendRequestDTO);
+            Long toWhomID = friendRequest.getId().getId2();
+            SentFriendRequestDTO friendRequestDTO = new SentFriendRequestDTO(usernameToWhom, date, cancel, toWhomID);
+            sentFriendRequests.add(friendRequestDTO);
         }
-        colFrom.setCellValueFactory(new PropertyValueFactory<>(FROM));
-        colFrom.setStyle(ALIGNMENT_CENTER);
+        colToWhom.setCellValueFactory(new PropertyValueFactory<>(TO_WHOM));
+        colToWhom.setStyle(ALIGNMENT_CENTER);
         colDate.setCellValueFactory(new PropertyValueFactory<>(DATE));
         colDate.setStyle(ALIGNMENT_CENTER);
-        colConfirm.setCellValueFactory(new PropertyValueFactory<>(CONFIRM));
-        colConfirm.setStyle(ALIGNMENT_CENTER);
         colCancel.setCellValueFactory(new PropertyValueFactory<>(CANCEL));
         colCancel.setStyle(ALIGNMENT_CENTER);
-        tvReceivedRequests.setItems(receivedFriendRequests);
+        tvSentRequests.setItems(sentFriendRequests);
     }
 }

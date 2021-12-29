@@ -11,5 +11,7 @@ module com.example.social_network_bastille {
     exports com.example.social_network_bastille;
     opens com.example.social_network_bastille.controller.graphic to javafx.fxml;
     exports com.example.social_network_bastille.controller.graphic;
+    opens com.example.social_network_bastille.domain.dto to javafx.fxml;
+    exports com.example.social_network_bastille.domain.dto;
     exports com.example.social_network_bastille.domain;
 }
