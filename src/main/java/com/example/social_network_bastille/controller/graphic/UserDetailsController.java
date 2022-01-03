@@ -68,6 +68,7 @@ public class UserDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        onMessageButtonClick();
         btnCloseTable.setVisible(false);
         btnCloseTable.setText("");
         tvFriends.setVisible(false);
@@ -177,4 +178,13 @@ public class UserDetailsController implements Initializable {
             btnCloseTable.setVisible(false);
         });
     }
+
+    public void onMessageButtonClick() {
+//        btnMessage.setOnAction(event -> {
+//            DatabaseUserConnection.changeScene(event,
+//                    "/view/chat-box.fxml", null);
+//        });
+    }
+
+
 }
