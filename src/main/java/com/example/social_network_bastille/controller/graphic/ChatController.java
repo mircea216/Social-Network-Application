@@ -6,16 +6,21 @@ import com.example.social_network_bastille.domain.dto.UserDTO;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
@@ -23,24 +28,33 @@ public class ChatController implements Initializable {
     private static final String SPACE = " ";
 
     static User loggedUser;
-    static User receiver;
     public static String usersName;
-    public Button btnSendTo;
+    @FXML
+    private Button btnBackChat;
     Stage stage;
     @FXML
     private TableView<UserDTO> tvRecipients;
     @FXML
     private TableColumn<UserDTO, String> colRecipients;
+    public AnchorPane selectedRecipient;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        InputStream inputBack = getClass().getResourceAsStream("/images/back.png");
+        assert inputBack != null;
+        Image backImage = new Image(inputBack, 30, 30, true, true);
+        btnBackChat.setBackground(Background.EMPTY);
+        btnBackChat.setGraphic(new ImageView(backImage));
+        btnBackChat.setOnAction(event -> DatabaseUserConnection.changeScene(event,
+                "/view/app-page.fxml", null));
         loggedUser = FoundUserController.getLoggedUser();
         addRecipients();
+        getClickedRecipient();
     }
 
     private void showRecipients() {
         colRecipients.setCellValueFactory(new PropertyValueFactory<>("username"));
-
     }
 
     public void addRecipients() {
@@ -78,14 +92,28 @@ public class ChatController implements Initializable {
         return false;
     }
 
-    public void onSendToButtonClick(ActionEvent actionEvent) {
-        //ObservableList<UserDTO> recipients = tvRecipients.getSelectionModel().getSelectedItems();
-        //pentru o lista cu mai mult de 1 user sa apara message sent
-       // if (recipients != null) {
-
-        //} else {
-          //  showErrorMessage("You didn't select any user");
-        //}
-        //users.setAll(getUserList());
+    private void getClickedRecipient() {
+        tvRecipients.setRowFactory(tableView -> {
+            TableRow<UserDTO> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY
+                        && event.getClickCount() == 2) {
+                    stage = (Stage) selectedRecipient.getScene().getWindow();
+                    stage.close();
+                    usersName = row.getItem().getUsername();
+                    FXMLLoader fxmlLoader = new FXMLLoader(DatabaseUserConnection.class.getResource
+                            ("/view/chat-box.fxml"));
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load(), 316, 410);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            });
+            return row;
+        });
     }
 }
