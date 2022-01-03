@@ -334,9 +334,9 @@ public class UserInterface {
         System.out.println("Give the message: ");
         Scanner scannerMessage = new Scanner(System.in);
         String message = scannerMessage.nextLine();
-        System.out.println("Give the message: ");
+        System.out.println("Give the id: ");
         Scanner scannerIdMessage = new Scanner(System.in);
-        Long idMessage = scannerMessage.nextLong();
+        Long idMessage = scannerIdMessage.nextLong();
         ReplyMessage replyMessage = new ReplyMessage(userController.getUserByID(idFrom),
                 List.of(userController.getUserByID(idTo)), message,
                 LocalDateTime.now(), messageController.getMessageByID(idMessage));

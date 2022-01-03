@@ -7,6 +7,7 @@ import com.example.social_network_bastille.repository.database.*;
 import com.example.social_network_bastille.service.UserServiceInterface;
 import com.example.social_network_bastille.service.implementation.FriendRequestService;
 import com.example.social_network_bastille.service.implementation.FriendshipService;
+import com.example.social_network_bastille.service.implementation.MessageService;
 import com.example.social_network_bastille.service.implementation.UserService;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -54,7 +55,8 @@ public class FoundUserController implements Initializable {
     static Repository<Tuple<Long, Long>, FriendRequest> friendRequestRepository = new FriendRequestDatabaseRepository(new
             FriendRequestValidator(), URL, USERNAME, PASSWORD, userRepository, friendshipDatabaseRepository);
     static UserServiceInterface userService = new UserService(userRepository, friendshipDatabaseRepository);
-    static FriendRequestService friendRequestService=new FriendRequestService(friendRequestRepository);
+    static FriendRequestService friendRequestService = new FriendRequestService(friendRequestRepository);
+    static MessageService messageService=new MessageService(messageRepository);
     private final ObservableList<User> users = FXCollections.observableArrayList();
     @FXML
     public TableColumn<User, String> lastNameCol;
@@ -90,6 +92,10 @@ public class FoundUserController implements Initializable {
         assert inputImageSearch != null;
         Image searchingImage = new Image(inputImageSearch, 100, 100, true, true);
         imageSearch.setImage(searchingImage);
+        getClickedUser();
+    }
+
+    private void getClickedUser() {
         foundUsers.setRowFactory(tableView -> {
             TableRow<User> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -124,6 +130,7 @@ public class FoundUserController implements Initializable {
         }
         return null;
     }
+
     public void showUsers() {
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));

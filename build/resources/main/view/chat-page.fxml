@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.social_network_bastille.controller.graphic.ChatController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="172.0" style="-fx-background-color: red;" />
+    <AnchorPane layoutX="203.0" layoutY="111.0" minHeight="0.0" minWidth="0.0" prefHeight="279.0" prefWidth="437.0">
+         <children>
+            <ScrollPane layoutX="-31.0" layoutY="-113.0" prefHeight="400.0" prefWidth="472.0">
+               <content>
+                  <TableView fx:id="tvRecipients" prefHeight="400.0" prefWidth="458.0">
+                    <columns>
+                      <TableColumn fx:id="colRecipients" prefWidth="457.6000244259834" />
+                    </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
