@@ -53,5 +53,7 @@ public class ApplicationController implements Initializable {
         Image chatImage = new Image(inputChat, 30, 30, true, true);
         btnChat.setBackground(Background.EMPTY);
         btnChat.setGraphic(new ImageView(chatImage));
+        btnChat.setOnAction(event -> DatabaseUserConnection.changeScene(event,
+                "/view/chat-page.fxml", null));
     }
 }

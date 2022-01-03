@@ -77,4 +77,5 @@ public class User extends Entity<Long> {
     public String toString() {
         return "ID: " + getId() + " FIRSTNAME: " + firstName + " LASTNAME: " + lastName;
     }
+
 }
