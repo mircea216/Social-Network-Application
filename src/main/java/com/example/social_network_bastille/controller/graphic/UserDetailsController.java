@@ -180,10 +180,6 @@ public class UserDetailsController implements Initializable {
     }
 
     public void onMessageButtonClick() {
-//        btnMessage.setOnAction(event -> {
-//            DatabaseUserConnection.changeScene(event,
-//                    "/view/chat-box.fxml", null);
-//        });
     }
 
 
