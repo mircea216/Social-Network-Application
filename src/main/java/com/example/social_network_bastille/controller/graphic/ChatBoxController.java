@@ -57,6 +57,12 @@ public class ChatBoxController implements Initializable {
         button_send.setBackground(Background.EMPTY);
         button_send.setGraphic(new ImageView(sendMessage));
 
+        InputStream inputClose = getClass().getResourceAsStream("/images/cancel.png");
+        assert inputClose != null;
+        Image close = new Image(inputClose, 27, 27, true, true);
+        btnClose.setBackground(Background.EMPTY);
+        btnClose.setGraphic(new ImageView(close));
+
         vbox_messages.heightProperty().addListener((observable, oldValue, newValue) -> sp_main.setVvalue((Double)
                 newValue));
         List<Message> messageList = StreamSupport

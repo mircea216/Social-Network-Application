@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -9,16 +10,22 @@
 
 <AnchorPane prefHeight="410.0" prefWidth="316.0" style="-fx-background-color: #8A8635;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.social_network_bastille.controller.graphic.ChatBoxController">
     <children>
-        <Button fx:id="button_send" layoutX="212.0" layoutY="337.0" prefHeight="3.0" prefWidth="16.0" />
-        <TextField fx:id="tf_message" alignment="CENTER" layoutX="-1.0" layoutY="337.0" prefHeight="26" prefWidth="200.0" promptText="Type your message here" style="-fx-background-color: d4bd8a;">
+        <Button fx:id="button_send" layoutX="266.0" layoutY="349.0" prefHeight="3.0" prefWidth="16.0" style="-fx-background-color: #8A8635;" stylesheets="@../css/buttons-style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+        <TextField fx:id="tf_message" alignment="CENTER" layoutX="52.0" layoutY="348.0" opacity="0.36" prefHeight="33.0" prefWidth="200.0" promptText="Type your message here" style="-fx-background-color: #5F7A61;">
          <font>
-            <Font name="Bell MT" size="12.0" />
+            <Font name="Bell MT" size="16.0" />
          </font></TextField>
         <ScrollPane fx:id="sp_main" fitToWidth="true" layoutX="-2.0" layoutY="2.0" prefHeight="334.0" prefWidth="322.0">
             <content>
                 <VBox fx:id="vbox_messages" prefHeight="337.0" prefWidth="321.0" style="-fx-background-color: dbd2c3;">
                <children>
-                  <Button fx:id="btnClose" mnemonicParsing="false" text="Close" />
+                  <Button fx:id="btnClose" mnemonicParsing="false" style="-fx-background-color: dbd2c3;" stylesheets="@../css/button-yellow-style.css">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </children></VBox>
             </content>
         </ScrollPane>

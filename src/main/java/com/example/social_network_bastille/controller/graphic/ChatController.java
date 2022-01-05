@@ -8,8 +8,6 @@ import com.example.social_network_bastille.domain.validators.IllegalFriendshipEx
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,10 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -40,6 +36,9 @@ public class ChatController implements Initializable {
     public Button btnGroupMessage;
     public TextField messageField;
     public Button sendBtn;
+    public Button btnAddRecipients;
+    public Label lblGroupMessage;
+    List<User> to = new ArrayList<>();
     @FXML
     private Button btnBackChat;
     Stage stage;
@@ -52,6 +51,27 @@ public class ChatController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        lblGroupMessage.setVisible(true);
+        InputStream inputAddReceiver = getClass().getResourceAsStream("/images/add-receiver.png");
+        assert inputAddReceiver != null;
+        Image addReceiver = new Image(inputAddReceiver, 50, 50, true, true);
+        btnAddRecipients.setBackground(Background.EMPTY);
+        btnAddRecipients.setGraphic(new ImageView(addReceiver));
+
+        InputStream inputSend = getClass().getResourceAsStream("/images/paper-plane.png");
+        assert inputSend != null;
+        Image send = new Image(inputSend, 25, 25, true, true);
+        sendBtn.setBackground(Background.EMPTY);
+        sendBtn.setGraphic(new ImageView(send));
+
+        InputStream inputGroup = getClass().getResourceAsStream("/images/chat-group.png");
+        assert inputGroup != null;
+        Image group = new Image(inputGroup, 50, 50, true, true);
+        btnGroupMessage.setBackground(Background.EMPTY);
+        btnGroupMessage.setGraphic(new ImageView(group));
+
+
+        btnAddRecipients.setVisible(false);
         messageField.setVisible(false);
         sendBtn.setVisible(false);
         InputStream inputBack = getClass().getResourceAsStream("/images/back.png");
@@ -62,7 +82,7 @@ public class ChatController implements Initializable {
         btnBackChat.setOnAction(event -> DatabaseUserConnection.changeScene(event,
                 "/view/app-page.fxml", null));
         loggedUser = FoundUserController.getLoggedUser();
-        btnGroupMessage.setOnAction(event->onBtnGroupMessage());
+        btnGroupMessage.setOnAction(event -> onBtnGroupMessage());
         addRecipients();
         getClickedRecipient();
     }
@@ -133,34 +153,46 @@ public class ChatController implements Initializable {
         });
     }
 
-    public void onBtnGroupMessage() {
+    public void onAddButtonClick() {
         messageField.setVisible(true);
         sendBtn.setVisible(true);
-        tvRecipients.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override public void handle(MouseEvent event) {
-                tvRecipients.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-            }
-        });
-        List<UserDTO> all = tvRecipients.getSelectionModel().getSelectedItems();
-        List<User> to = new ArrayList<>();
-
-        for (UserDTO user : all) {
-            to.add(FoundUserController.userService.getUserByID(user.getId()));
+        btnAddRecipients.setOnAction(event -> onAddButtonClick());
+        tvRecipients.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        UserDTO userDTO = tvRecipients.getSelectionModel().getSelectedItem();
+        if(!to.contains(FoundUserController.userService.getUserByID(userDTO.getId()))) {
+            to.add(FoundUserController.userService.getUserByID(userDTO.getId()));
         }
+    }
 
+
+    public void onBtnGroupMessage() {
+        lblGroupMessage.setVisible(false);
+        btnAddRecipients.setVisible(true);
+        messageField.setVisible(true);
+        sendBtn.setVisible(true);
+        btnGroupMessage.setVisible(false);
+        btnAddRecipients.setOnAction(event -> onAddButtonClick());
+        tvRecipients.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         sendBtn.setOnAction(event -> {
             String text = messageField.getText();
-            Message message = new Message(loggedUser, to, text, LocalDateTime.now());
-            try {
-                FoundUserController.messageService.saveMessage(message);
-                AlertUtil.showNotification("Your message has been sent successfully to everyone!");
-                messageField.setVisible(false);
-                sendBtn.setVisible(false);
-            } catch (IllegalFriendshipException e) {
-                e.printStackTrace();
+            if (!text.isEmpty()) {
+                Message message = new Message(loggedUser, to, text, LocalDateTime.now());
+
+                try {
+                    FoundUserController.messageService.saveMessage(message);
+                    AlertUtil.showNotification("Your message has been sent successfully to everyone!");
+                    messageField.setVisible(false);
+                    sendBtn.setVisible(false);
+                    btnAddRecipients.setVisible(false);
+                    btnGroupMessage.setVisible(true);
+                    lblGroupMessage.setVisible(true);
+                } catch (IllegalFriendshipException e) {
+                    e.printStackTrace();
+                }
             }
         });
         messageField.clear();
     }
+
 
 }
