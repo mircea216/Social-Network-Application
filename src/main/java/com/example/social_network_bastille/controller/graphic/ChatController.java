@@ -159,7 +159,7 @@ public class ChatController implements Initializable {
         btnAddRecipients.setOnAction(event -> onAddButtonClick());
         tvRecipients.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         UserDTO userDTO = tvRecipients.getSelectionModel().getSelectedItem();
-        if(!to.contains(FoundUserController.userService.getUserByID(userDTO.getId()))) {
+        if (!to.contains(FoundUserController.userService.getUserByID(userDTO.getId()))) {
             to.add(FoundUserController.userService.getUserByID(userDTO.getId()));
         }
     }

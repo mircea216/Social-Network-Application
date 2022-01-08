@@ -1,10 +1,8 @@
 package com.example.social_network_bastille.controller.graphic;
 
-import com.example.social_network_bastille.domain.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -33,11 +31,12 @@ public class ApplicationController implements Initializable {
         btnSearcher.setBackground(Background.EMPTY);
         btnSearcher.setGraphic(new ImageView(searchImage));
         btnSearcher.setOnAction((event -> DatabaseUserConnection.changeScene(event,
-                        "/view/found-user.fxml", null)));
+                "/view/found-user.fxml", null)));
 
         InputStream inputFriendRequest = getClass().getResourceAsStream("/images/friend-request.png");
         assert inputFriendRequest != null;
-        Image friendRequestImage = new Image(inputFriendRequest, 30, 30, true, true);
+        Image friendRequestImage = new Image(inputFriendRequest, 30, 30,
+                true, true);
         btnFriendRequests.setBackground(Background.EMPTY);
         btnFriendRequests.setGraphic(new ImageView(friendRequestImage));
         btnFriendRequests.setOnAction(event -> DatabaseUserConnection.changeScene(event,

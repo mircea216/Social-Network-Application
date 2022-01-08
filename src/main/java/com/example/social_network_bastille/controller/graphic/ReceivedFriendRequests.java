@@ -76,11 +76,13 @@ public class ReceivedFriendRequests implements Initializable {
     private final FriendshipDatabaseRepository friendshipDatabaseRepository = new FriendshipDatabaseRepository(new
             FriendshipValidator(), URL, USERNAME, PASSWORD, userRepository);
     private final UserServiceInterface userService = new UserService(userRepository, friendshipDatabaseRepository);
-    private final Repository<Tuple<Long, Long>, FriendRequest> friendRequestRepository = new FriendRequestDatabaseRepository(new
-            FriendRequestValidator(), URL, USERNAME, PASSWORD, userRepository, friendshipDatabaseRepository);
+    private final Repository<Tuple<Long, Long>, FriendRequest> friendRequestRepository =
+            new FriendRequestDatabaseRepository(new
+                    FriendRequestValidator(), URL, USERNAME, PASSWORD, userRepository, friendshipDatabaseRepository);
     private final FriendRequestService friendRequestService = new FriendRequestService(friendRequestRepository);
     private final UserControllerInterface userController = new UserController(userService);
-    private final FriendRequestControllerInterface friendRequestController = new FriendRequestController(friendRequestService);
+    private final FriendRequestControllerInterface friendRequestController =
+            new FriendRequestController(friendRequestService);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
