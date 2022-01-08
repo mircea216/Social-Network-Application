@@ -96,7 +96,7 @@ public class ChatBoxController implements Initializable {
         button_send.setOnAction(event -> {
             String sentMessage = tf_message.getText();
             if (!sentMessage.isEmpty()) {
-                createChatBubble(tf_message.getText(), Pos.CENTER_RIGHT, "-fx-background-color: #8B4513;"
+                createChatBubble(tf_message.getText(), Pos.CENTER_RIGHT, LIGHT_BROWN
                         + "-fx-background-radius: 20px");
                 Message messageToSave = new Message(loggedUser, List.of(recipientUser), tf_message.getText(),
                         LocalDateTime.now());
@@ -122,7 +122,7 @@ public class ChatBoxController implements Initializable {
                 Text messageText = new Text(sentMessage);
                 TextFlow flow = new TextFlow(messageText);
 
-                flow.setStyle(BROWN + "-fx-background-radius: 20px;");
+                flow.setStyle(LIGHT_BROWN + "-fx-background-radius: 20px;");
                 flow.setPadding(new Insets(5, 5, 5, 10));
 
                 messageText.setFill(Color.WHITE);
