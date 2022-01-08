@@ -6,22 +6,16 @@ import com.example.social_network_bastille.domain.validators.IllegalFriendshipEx
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -74,7 +68,8 @@ public class UserDetailsController implements Initializable {
         btnSendProfileMessage.setVisible(false);
         InputStream inputCloseTable = getClass().getResourceAsStream("/images/close.png");
         assert inputCloseTable != null;
-        Image closeTableImage = new Image(inputCloseTable, 30, 30, true, true);
+        Image closeTableImage = new Image(inputCloseTable, 30,
+                30, true, true);
         btnCloseTable.setBackground(Background.EMPTY);
         btnCloseTable.setGraphic(new ImageView(closeTableImage));
         btnCloseTable.setVisible(false);
@@ -94,19 +89,22 @@ public class UserDetailsController implements Initializable {
             labelUser.setText("Your" + " profile");
             btnAddDelete.setVisible(false);
             btnMessage.setVisible(false);
-            InputStream inputImageSearcherProfile = getClass().getResourceAsStream("/images/searcherProfile.png");
+            InputStream inputImageSearcherProfile = getClass()
+                    .getResourceAsStream("/images/searcherProfile.png");
             assert inputImageSearcherProfile != null;
-            Image profilesearcherImage = new Image(inputImageSearcherProfile, 100, 100, true, true);
+            Image profilesearcherImage = new Image(inputImageSearcherProfile,
+                    100, 100, true, true);
             imgViewProfilePicture.setImage(profilesearcherImage);
         } else {
             labelUser.setText(FoundUserController.usersName + "'s" + " profile");
             InputStream inputImageProfile = getClass().getResourceAsStream("/images/profilePicture.png");
             assert inputImageProfile != null;
-            Image profileImage = new Image(inputImageProfile, 100, 100, true, true);
+            Image profileImage = new Image(inputImageProfile, 100,
+                    100, true, true);
             imgViewProfilePicture.setImage(profileImage);
         }
         setButtonLabel();
-        btnMessage.setOnAction(event->onMessageButtonClick());
+        btnMessage.setOnAction(event -> onMessageButtonClick());
     }
 
     public void setButtonLabel() {
@@ -170,8 +168,7 @@ public class UserDetailsController implements Initializable {
             Font font = Font.font("Harlow Solid Italic", FontWeight.BOLD, 17);
             label.setFont(font);
             tvFriends.setPlaceholder(label);
-        }
-        else {
+        } else {
             showUsers();
             tvFriends.setFixedCellSize(125);
         }
@@ -199,8 +196,8 @@ public class UserDetailsController implements Initializable {
         btnMessage.setVisible(false);
         tfSend.setVisible(true);
         btnSendProfileMessage.setVisible(true);
-        btnSendProfileMessage.setOnAction(event->{
-            if(!tfSend.getText().isEmpty()) {
+        btnSendProfileMessage.setOnAction(event -> {
+            if (!tfSend.getText().isEmpty()) {
                 Message message = new Message(loggedUser, List.of(foundUser), tfSend.getText(), LocalDateTime.now());
                 try {
                     FoundUserController.messageService.saveMessage(message);

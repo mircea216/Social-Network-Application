@@ -49,13 +49,13 @@ public class FoundUserController implements Initializable {
     static FriendshipDatabaseRepository friendshipDatabaseRepository = new FriendshipDatabaseRepository(new
             FriendshipValidator(), URL, USERNAME, PASSWORD, userRepository);
     static FriendshipService friendshipService = new FriendshipService(userRepository, friendshipDatabaseRepository);
-    static Repository<Long, Message> messageRepository = new MessageDatabaseRepository(new MessageValidator(), URL, USERNAME,
-            PASSWORD, userRepository);
+    static Repository<Long, Message> messageRepository = new MessageDatabaseRepository(new MessageValidator(), URL,
+            USERNAME, PASSWORD, userRepository);
     static Repository<Long, ReplyMessage> replyMessageRepository = new ReplyMessageDatabaseRepository(new
             ReplyMessageValidator(), URL, USERNAME, PASSWORD, messageRepository, userRepository);
     static ReplyMessageServiceInterface replyMessageService = new ReplyMessageService(replyMessageRepository);
-    static Repository<Tuple<Long, Long>, FriendRequest> friendRequestRepository = new FriendRequestDatabaseRepository(new
-            FriendRequestValidator(), URL, USERNAME, PASSWORD, userRepository, friendshipDatabaseRepository);
+    static Repository<Tuple<Long, Long>, FriendRequest> friendRequestRepository = new FriendRequestDatabaseRepository
+            (new FriendRequestValidator(), URL, USERNAME, PASSWORD, userRepository, friendshipDatabaseRepository);
     static UserServiceInterface userService = new UserService(userRepository, friendshipDatabaseRepository);
     static FriendRequestService friendRequestService = new FriendRequestService(friendRequestRepository);
     static MessageService messageService = new MessageService(messageRepository);
@@ -92,7 +92,8 @@ public class FoundUserController implements Initializable {
 
         InputStream inputImageSearch = getClass().getResourceAsStream("/images/searching.png");
         assert inputImageSearch != null;
-        Image searchingImage = new Image(inputImageSearch, 100, 100, true, true);
+        Image searchingImage = new Image(inputImageSearch, 100, 100,
+                true, true);
         imageSearch.setImage(searchingImage);
         Label label = new Label("Search users! ");
         Font font = Font.font("Harlow Solid Italic", FontWeight.BOLD, 17);
@@ -111,7 +112,8 @@ public class FoundUserController implements Initializable {
                     stage.close();
                     usersName = row.getItem().getFirstName();
                     UserDetailsController.foundUser = row.getItem();
-                    FXMLLoader fxmlLoader = new FXMLLoader(DatabaseUserConnection.class.getResource("/view/user-details.fxml"));
+                    FXMLLoader fxmlLoader =
+                            new FXMLLoader(DatabaseUserConnection.class.getResource("/view/user-details.fxml"));
                     Scene scene = null;
                     try {
                         scene = new Scene(fxmlLoader.load(), 600, 400);
@@ -145,7 +147,7 @@ public class FoundUserController implements Initializable {
 
     @FXML
     public void findAnUser() {
-        if(!tfSearch.getText().isEmpty()) {
+        if (!tfSearch.getText().isEmpty()) {
             Predicate<User> predicate = user -> (user.getFirstName() + " " + user.getLastName())
                     .toLowerCase()
                     .contains(tfSearch.getText().toLowerCase());
@@ -157,10 +159,10 @@ public class FoundUserController implements Initializable {
             users.setAll(filtered);
             showUsers();
             foundUsers.setFixedCellSize(125);
-            foundUsers.prefHeightProperty().bind(Bindings.size(foundUsers.getItems()).multiply(foundUsers.getFixedCellSize())
-                    .add(filtered.size()));
-        }
-        else{
+            foundUsers.prefHeightProperty()
+                    .bind(Bindings.size(foundUsers.getItems()).multiply(foundUsers.getFixedCellSize())
+                            .add(filtered.size()));
+        } else {
             AlertUtil.showNotification("Introduce a valid username!");
         }
     }

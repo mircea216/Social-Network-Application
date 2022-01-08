@@ -1,7 +1,5 @@
 package com.example.social_network_bastille.controller.graphic;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,12 +22,9 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        btnLogIn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DatabaseUserConnection.logInUser(event, tfUsername.getText(), pfPassword.getText());
-                loggedUserEmail = tfUsername.getText();
-            }
+        btnLogIn.setOnAction(event -> {
+            DatabaseUserConnection.logInUser(event, tfUsername.getText(), pfPassword.getText());
+            loggedUserEmail = tfUsername.getText();
         });
 
         btnSignUp.setOnAction(event -> DatabaseUserConnection.

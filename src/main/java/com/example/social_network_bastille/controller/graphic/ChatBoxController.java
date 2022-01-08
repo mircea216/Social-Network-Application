@@ -28,8 +28,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class ChatBoxController implements Initializable {
-    private static final String GREEN = "-fx-background-color: #0B4619;";
-    private static final String BROWN = "-fx-background-color: #8B4513;";
+    private static final String GREEN = "-fx-background-color: #889EAF;";
+    private static final String BROWN = "-fx-background-color: #483434;";
+    private static final String LIGHT_BROWN = "-fx-background-color: #6B4F4F;";
     private static final String REPLIED = "Replied:";
     private static User loggedUser;
 
@@ -78,15 +79,16 @@ public class ChatBoxController implements Initializable {
                             GREEN + "-fx-background-radius: 20px");
                 } else {
                     createChatBubble(message.getMessage(), Pos.CENTER_RIGHT,
-                            BROWN + "-fx-background-radius: 20px");
+                            LIGHT_BROWN + "-fx-background-radius: 20px");
                 }
 
             }
             if (isRecipient(message, loggedUser) && message.getFrom().getId().equals(recipientUser.getId())) {
                 if (message.getMessage().contains(REPLIED)) {
-                createChatBubble(message.getMessage(), Pos.CENTER_LEFT, GREEN + "-fx-background-radius: 20px");
-                }else{
-                    createChatBubble(message.getMessage(), Pos.CENTER_LEFT, BROWN + "-fx-background-radius: 20px");
+                    createChatBubble(message.getMessage(), Pos.CENTER_LEFT, GREEN + "-fx-background-radius: 20px");
+                } else {
+                    createChatBubble(message.getMessage(), Pos.CENTER_LEFT,
+                            BROWN + "-fx-background-radius: 20px");
                 }
             }
         }
@@ -94,8 +96,10 @@ public class ChatBoxController implements Initializable {
         button_send.setOnAction(event -> {
             String sentMessage = tf_message.getText();
             if (!sentMessage.isEmpty()) {
-                createChatBubble(tf_message.getText(), Pos.CENTER_RIGHT, "-fx-background-color: #8B4513;" + "-fx-background-radius: 20px");
-                Message messageToSave = new Message(loggedUser, List.of(recipientUser), tf_message.getText(), LocalDateTime.now());
+                createChatBubble(tf_message.getText(), Pos.CENTER_RIGHT, "-fx-background-color: #8B4513;"
+                        + "-fx-background-radius: 20px");
+                Message messageToSave = new Message(loggedUser, List.of(recipientUser), tf_message.getText(),
+                        LocalDateTime.now());
                 try {
                     FoundUserController.messageService.saveMessage(messageToSave);
                 } catch (IllegalFriendshipException e) {
