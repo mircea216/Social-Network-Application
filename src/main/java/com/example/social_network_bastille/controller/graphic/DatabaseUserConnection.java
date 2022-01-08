@@ -78,7 +78,7 @@ public class DatabaseUserConnection {
                             URL, USER, PASSWORD);
                     setUserRepository(userRepository);
                     userRepository.save(user);
-                    changeScene(event, "/view/app-page.fxml", email);
+                    changeScene(event, "/view/log-in.fxml", email);
                 } catch (IllegalFriendshipException e) {
                     e.printStackTrace();
                 }

@@ -1,10 +1,8 @@
 package com.example.social_network_bastille.controller.graphic;
 
 import com.example.social_network_bastille.domain.Message;
-import com.example.social_network_bastille.domain.ReplyMessage;
 import com.example.social_network_bastille.domain.User;
 import com.example.social_network_bastille.domain.validators.IllegalFriendshipException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -21,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -31,11 +28,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class ChatBoxController implements Initializable {
+    private static final String GREEN = "-fx-background-color: #0B4619;";
+    private static final String BROWN = "-fx-background-color: #8B4513;";
+    private static final String REPLIED = "Replied:";
     private static User loggedUser;
 
 
     private static User recipientUser;
-    Long idMessage;
     @FXML
     private Button btnClose;
     @FXML
@@ -69,19 +68,26 @@ public class ChatBoxController implements Initializable {
         vbox_messages.heightProperty().addListener((observable, oldValue, newValue) -> sp_main.setVvalue((Double)
                 newValue));
         List<Message> messageList = StreamSupport
-                .stream(FoundUserController.messageService.findAll().spliterator(), false).sorted(new Comparator<Message>() {
-                    @Override
-                    public int compare(Message o1, Message o2) {
-                        return o1.getDate().compareTo(o2.getDate());
-                    }
-                })
+                .stream(FoundUserController.messageService.findAll().spliterator(), false)
+                .sorted(Comparator.comparing(Message::getDate))
                 .collect(Collectors.toList());
         for (Message message : messageList) {
             if (message.getFrom().getId().equals(loggedUser.getId()) && isRecipient(message, recipientUser)) {
-                createChatBubble(message.getMessage(), Pos.CENTER_RIGHT, "-fx-background-color: #8B4513;" + "-fx-background-radius: 20px");
+                if (message.getMessage().contains(REPLIED)) {
+                    createChatBubble(message.getMessage(), Pos.CENTER_RIGHT,
+                            GREEN + "-fx-background-radius: 20px");
+                } else {
+                    createChatBubble(message.getMessage(), Pos.CENTER_RIGHT,
+                            BROWN + "-fx-background-radius: 20px");
+                }
+
             }
             if (isRecipient(message, loggedUser) && message.getFrom().getId().equals(recipientUser.getId())) {
-                createChatBubble(message.getMessage(), Pos.CENTER_LEFT, "-fx-background-color: #461111;" + "-fx-background-radius: 20px");
+                if (message.getMessage().contains(REPLIED)) {
+                createChatBubble(message.getMessage(), Pos.CENTER_LEFT, GREEN + "-fx-background-radius: 20px");
+                }else{
+                    createChatBubble(message.getMessage(), Pos.CENTER_LEFT, BROWN + "-fx-background-radius: 20px");
+                }
             }
         }
 
@@ -102,22 +108,63 @@ public class ChatBoxController implements Initializable {
 
     }
 
-    private void onChatBubbleClick() {
-
-
+    private void refreshMessages() {
         button_send.setOnAction(event -> {
-            String sentMessage = "Replied TO: " + tf_message.getText();
+            String sentMessage = tf_message.getText();
             if (!tf_message.getText().isEmpty()) {
-                createChatBubble(sentMessage, Pos.CENTER_RIGHT, "-fx-background-color: #0B4619;" +
-                        "-fx-background-radius: 20px");
+                HBox chatBubble = new HBox();
+                chatBubble.setAlignment(Pos.CENTER_RIGHT);
+                chatBubble.setPadding(new Insets(5, 5, 5, 10));
+                Text messageText = new Text(sentMessage);
+                TextFlow flow = new TextFlow(messageText);
+
+                flow.setStyle(BROWN + "-fx-background-radius: 20px;");
+                flow.setPadding(new Insets(5, 5, 5, 10));
+
+                messageText.setFill(Color.WHITE);
+                chatBubble.getChildren().add(flow);
+                vbox_messages.getChildren().add(chatBubble);
                 Message replyMessage = new Message(loggedUser, List.of(recipientUser),
-                        tf_message.getText(), LocalDateTime.now());
+                        sentMessage, LocalDateTime.now());
                 try {
                     FoundUserController.messageService.saveMessage(replyMessage);
                 } catch (IllegalFriendshipException e) {
                     e.printStackTrace();
                 }
                 tf_message.clear();
+                chatBubble.setOnMouseClicked(mouseEvent -> {
+                    chatBubble.setCursor(Cursor.OPEN_HAND);
+                    onChatBubbleClick();
+                });
+            }
+        });
+    }
+
+    private void onChatBubbleClick() {
+        button_send.setOnAction(event -> {
+            String sentMessage = "Replied: " + tf_message.getText();
+            if (!tf_message.getText().isEmpty()) {
+                HBox chatBubble = new HBox();
+                chatBubble.setAlignment(Pos.CENTER_RIGHT);
+                chatBubble.setPadding(new Insets(5, 5, 5, 10));
+                Text messageText = new Text(sentMessage);
+                TextFlow flow = new TextFlow(messageText);
+
+                flow.setStyle(GREEN + "-fx-background-radius: 20px;");
+                flow.setPadding(new Insets(5, 5, 5, 10));
+
+                messageText.setFill(Color.WHITE);
+                chatBubble.getChildren().add(flow);
+                vbox_messages.getChildren().add(chatBubble);
+                Message replyMessage = new Message(loggedUser, List.of(recipientUser),
+                        sentMessage, LocalDateTime.now());
+                try {
+                    FoundUserController.messageService.saveMessage(replyMessage);
+                } catch (IllegalFriendshipException e) {
+                    e.printStackTrace();
+                }
+                tf_message.clear();
+                refreshMessages();
             }
         });
     }
