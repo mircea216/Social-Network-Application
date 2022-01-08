@@ -20,14 +20,13 @@
          </font></TextField>
         <ScrollPane fx:id="sp_main" fitToWidth="true" layoutX="-2.0" layoutY="2.0" prefHeight="334.0" prefWidth="322.0">
             <content>
-                <VBox fx:id="vbox_messages" prefHeight="337.0" prefWidth="321.0" style="-fx-background-color: dbd2c3;">
-               <children>
-                  <Button fx:id="btnClose" mnemonicParsing="false" style="-fx-background-color: dbd2c3;" stylesheets="@../css/button-yellow-style.css">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></Button>
-               </children></VBox>
+                <VBox fx:id="vbox_messages" prefHeight="337.0" prefWidth="321.0" style="-fx-background-color: dbd2c3;" />
             </content>
         </ScrollPane>
+      <Button fx:id="btnClose" layoutX="-2.0" layoutY="383.0" mnemonicParsing="false" style="-fx-background-color: #8A8635;" stylesheets="@../css/buttons-style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
     </children>
 </AnchorPane>

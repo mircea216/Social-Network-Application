@@ -29,6 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -96,19 +97,26 @@ public class ReceivedFriendRequests implements Initializable {
         Image viewImage = new Image(inputShow, 40, 40, true, true);
         btnShow.setBackground(Background.EMPTY);
         btnShow.setGraphic(new ImageView(viewImage));
-        btnShow.setCursor(Cursor.HAND);
+        showFriendRequests();
     }
 
     public void showFriendRequests() {
         createTableView();
         int size = friendRequestController.getReceivedFriendRequests(
                 userController.getUserByEmail(LogInController.getLoggedUserEmail()).getId()).size();
-        tvReceivedRequests.setFixedCellSize(100);
-        tvReceivedRequests
-                .prefHeightProperty()
-                .bind(Bindings.size(tvReceivedRequests.getItems())
-                        .multiply(tvReceivedRequests.getFixedCellSize())
-                        .add(size));
+        if (size == 0) {
+            Label label = new Label("You have no requests! ");
+            Font font = Font.font("Harlow Solid Italic", FontWeight.BOLD, 17);
+            label.setFont(font);
+            tvReceivedRequests.setPlaceholder(label);
+        } else {
+            tvReceivedRequests.setFixedCellSize(100);
+            tvReceivedRequests
+                    .prefHeightProperty()
+                    .bind(Bindings.size(tvReceivedRequests.getItems())
+                            .multiply(tvReceivedRequests.getFixedCellSize())
+                            .add(size));
+        }
     }
 
     public void manageRequests() {

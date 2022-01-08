@@ -13,7 +13,7 @@
     <children>
         <AnchorPane prefHeight="400.0" prefWidth="225.0" style="-fx-background-color: F4EEA9;">
             <children>
-                <Button fx:id="btnShow" layoutX="69.0" layoutY="112.0" mnemonicParsing="false" onAction="#showFriendRequests" />
+                <Button fx:id="btnShow" layoutX="69.0" layoutY="112.0" mnemonicParsing="false"  />
                 <Button fx:id="btnBackSentRequests" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="35.0">
                     <cursor>
                         <Cursor fx:constant="HAND" />
