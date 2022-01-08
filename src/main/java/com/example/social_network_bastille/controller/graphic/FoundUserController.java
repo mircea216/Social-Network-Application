@@ -1,14 +1,13 @@
 package com.example.social_network_bastille.controller.graphic;
 
+import com.example.social_network_bastille.controller.graphic.alert.AlertUtil;
 import com.example.social_network_bastille.domain.*;
 import com.example.social_network_bastille.domain.validators.*;
 import com.example.social_network_bastille.repository.Repository;
 import com.example.social_network_bastille.repository.database.*;
+import com.example.social_network_bastille.service.ReplyMessageServiceInterface;
 import com.example.social_network_bastille.service.UserServiceInterface;
-import com.example.social_network_bastille.service.implementation.FriendRequestService;
-import com.example.social_network_bastille.service.implementation.FriendshipService;
-import com.example.social_network_bastille.service.implementation.MessageService;
-import com.example.social_network_bastille.service.implementation.UserService;
+import com.example.social_network_bastille.service.implementation.*;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
@@ -52,11 +53,12 @@ public class FoundUserController implements Initializable {
             PASSWORD, userRepository);
     static Repository<Long, ReplyMessage> replyMessageRepository = new ReplyMessageDatabaseRepository(new
             ReplyMessageValidator(), URL, USERNAME, PASSWORD, messageRepository, userRepository);
+    static ReplyMessageServiceInterface replyMessageService = new ReplyMessageService(replyMessageRepository);
     static Repository<Tuple<Long, Long>, FriendRequest> friendRequestRepository = new FriendRequestDatabaseRepository(new
             FriendRequestValidator(), URL, USERNAME, PASSWORD, userRepository, friendshipDatabaseRepository);
     static UserServiceInterface userService = new UserService(userRepository, friendshipDatabaseRepository);
     static FriendRequestService friendRequestService = new FriendRequestService(friendRequestRepository);
-    static MessageService messageService=new MessageService(messageRepository);
+    static MessageService messageService = new MessageService(messageRepository);
     private final ObservableList<User> users = FXCollections.observableArrayList();
     @FXML
     public TableColumn<User, String> lastNameCol;
@@ -92,6 +94,10 @@ public class FoundUserController implements Initializable {
         assert inputImageSearch != null;
         Image searchingImage = new Image(inputImageSearch, 100, 100, true, true);
         imageSearch.setImage(searchingImage);
+        Label label = new Label("Search users! ");
+        Font font = Font.font("Harlow Solid Italic", FontWeight.BOLD, 17);
+        label.setFont(font);
+        foundUsers.setPlaceholder(label);
         getClickedUser();
     }
 
@@ -139,18 +145,24 @@ public class FoundUserController implements Initializable {
 
     @FXML
     public void findAnUser() {
-        Predicate<User> predicate = user -> (user.getFirstName() + " " + user.getLastName())
-                .toLowerCase()
-                .contains(tfSearch.getText().toLowerCase());
-        ObservableList<User> filtered = FXCollections.observableArrayList();
-        filtered.setAll(StreamSupport
-                .stream(userService.findAll().spliterator(), false)
-                .filter(predicate)
-                .collect(Collectors.toList()));
-        users.setAll(filtered);
-        showUsers();
-        foundUsers.setFixedCellSize(125);
-        foundUsers.prefHeightProperty().bind(Bindings.size(foundUsers.getItems()).multiply(foundUsers.getFixedCellSize())
-                .add(filtered.size()));
+        if(!tfSearch.getText().isEmpty()) {
+            Predicate<User> predicate = user -> (user.getFirstName() + " " + user.getLastName())
+                    .toLowerCase()
+                    .contains(tfSearch.getText().toLowerCase());
+            ObservableList<User> filtered = FXCollections.observableArrayList();
+            filtered.setAll(StreamSupport
+                    .stream(userService.findAll().spliterator(), false)
+                    .filter(predicate)
+                    .collect(Collectors.toList()));
+            users.setAll(filtered);
+            showUsers();
+            foundUsers.setFixedCellSize(125);
+            foundUsers.prefHeightProperty().bind(Bindings.size(foundUsers.getItems()).multiply(foundUsers.getFixedCellSize())
+                    .add(filtered.size()));
+        }
+        else{
+            AlertUtil.showNotification("Introduce a valid username!");
+        }
     }
 }
+

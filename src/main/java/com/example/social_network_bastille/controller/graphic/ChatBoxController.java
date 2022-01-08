@@ -1,6 +1,7 @@
 package com.example.social_network_bastille.controller.graphic;
 
 import com.example.social_network_bastille.domain.Message;
+import com.example.social_network_bastille.domain.ReplyMessage;
 import com.example.social_network_bastille.domain.User;
 import com.example.social_network_bastille.domain.validators.IllegalFriendshipException;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -19,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.w3c.dom.events.MouseEvent;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -32,6 +35,7 @@ public class ChatBoxController implements Initializable {
 
 
     private static User recipientUser;
+    Long idMessage;
     @FXML
     private Button btnClose;
     @FXML
@@ -42,7 +46,6 @@ public class ChatBoxController implements Initializable {
     private TextField tf_message;
     @FXML
     private ScrollPane sp_main;
-
 
 
     @Override
@@ -59,7 +62,7 @@ public class ChatBoxController implements Initializable {
 
         InputStream inputClose = getClass().getResourceAsStream("/images/cancel.png");
         assert inputClose != null;
-        Image close = new Image(inputClose, 27, 27, true, true);
+        Image close = new Image(inputClose, 20, 20, true, true);
         btnClose.setBackground(Background.EMPTY);
         btnClose.setGraphic(new ImageView(close));
 
@@ -99,7 +102,28 @@ public class ChatBoxController implements Initializable {
 
     }
 
+    private void onChatBubbleClick() {
+
+
+        button_send.setOnAction(event -> {
+            String sentMessage = "Replied TO: " + tf_message.getText();
+            if (!tf_message.getText().isEmpty()) {
+                createChatBubble(sentMessage, Pos.CENTER_RIGHT, "-fx-background-color: #0B4619;" +
+                        "-fx-background-radius: 20px");
+                Message replyMessage = new Message(loggedUser, List.of(recipientUser),
+                        tf_message.getText(), LocalDateTime.now());
+                try {
+                    FoundUserController.messageService.saveMessage(replyMessage);
+                } catch (IllegalFriendshipException e) {
+                    e.printStackTrace();
+                }
+                tf_message.clear();
+            }
+        });
+    }
+
     private void createChatBubble(String message, Pos position, String style) {
+
         HBox chatBubble = new HBox();
         chatBubble.setAlignment(position);
         chatBubble.setPadding(new Insets(5, 5, 5, 10));
@@ -112,6 +136,11 @@ public class ChatBoxController implements Initializable {
         messageText.setFill(Color.WHITE);
         chatBubble.getChildren().add(flow);
         vbox_messages.getChildren().add(chatBubble);
+
+        chatBubble.setOnMouseClicked(event -> {
+            chatBubble.setCursor(Cursor.OPEN_HAND);
+            onChatBubbleClick();
+        });
     }
 
     private boolean isRecipient(Message message, User userRecipient) {
