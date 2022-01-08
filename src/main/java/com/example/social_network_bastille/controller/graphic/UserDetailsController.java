@@ -1,45 +1,31 @@
 package com.example.social_network_bastille.controller.graphic;
 
+import com.example.social_network_bastille.controller.graphic.alert.AlertUtil;
 import com.example.social_network_bastille.domain.*;
 import com.example.social_network_bastille.domain.validators.IllegalFriendshipException;
-import com.example.social_network_bastille.service.implementation.FriendRequestService;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -49,28 +35,50 @@ import java.util.stream.StreamSupport;
 public class UserDetailsController implements Initializable {
     static User loggedUser;
     static User foundUser;
+    @FXML
+    private Button btnSendProfileMessage;
+    @FXML
+    private TextField tfSend;
 
     @FXML
-    public Label labelUser;
-    public Button btnAddDelete;
-    public ImageView imgViewProfilePicture;
-    public Button btnBack;
-    public Button btnSeeFriends;
-    public AnchorPane scene2;
-    public AnchorPane sceneToFade;
-    public TableView<User> tvFriends;
-    public TableColumn<User, String> firstNameCol;
-    public TableColumn<User, String> lastNameCol;
+    private Label labelUser;
+    @FXML
+    private Button btnAddDelete;
+    @FXML
+    private ImageView imgViewProfilePicture;
+    @FXML
+    private Button btnBack;
+    @FXML
+    private Button btnSeeFriends;
+    @FXML
+    private TableView<User> tvFriends;
+    @FXML
+    private TableColumn<User, String> firstNameCol;
+    @FXML
+    private TableColumn<User, String> lastNameCol;
     private final ObservableList<User> friends = FXCollections.observableArrayList();
-    public Button btnCloseTable;
-    public Button btnMessage;
+    @FXML
+    private Button btnCloseTable;
+    @FXML
+    private Button btnMessage;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        onMessageButtonClick();
+        btnMessage.setVisible(true);
+        InputStream inputPlane = getClass().getResourceAsStream("/images/email.png");
+        assert inputPlane != null;
+        Image sendImage = new Image(inputPlane, 25, 25, true, true);
+        btnSendProfileMessage.setBackground(Background.EMPTY);
+        btnSendProfileMessage.setGraphic(new ImageView(sendImage));
+        btnSendProfileMessage.setVisible(false);
+        InputStream inputCloseTable = getClass().getResourceAsStream("/images/close.png");
+        assert inputCloseTable != null;
+        Image closeTableImage = new Image(inputCloseTable, 30, 30, true, true);
+        btnCloseTable.setBackground(Background.EMPTY);
+        btnCloseTable.setGraphic(new ImageView(closeTableImage));
         btnCloseTable.setVisible(false);
-        btnCloseTable.setText("");
+        tfSend.setVisible(false);
         tvFriends.setVisible(false);
         onSeeFriendsButtonClick();
         loggedUser = FoundUserController.getLoggedUser();
@@ -98,6 +106,7 @@ public class UserDetailsController implements Initializable {
             imgViewProfilePicture.setImage(profileImage);
         }
         setButtonLabel();
+        btnMessage.setOnAction(event->onMessageButtonClick());
     }
 
     public void setButtonLabel() {
@@ -156,8 +165,16 @@ public class UserDetailsController implements Initializable {
                 .filter(predicate)
                 .collect(Collectors.toList()));
         friends.setAll(filtered);
-        showUsers();
-        tvFriends.setFixedCellSize(125);
+        if (filtered.size() == 0) {
+            Label label = new Label("This user has no friends for now! ");
+            Font font = Font.font("Harlow Solid Italic", FontWeight.BOLD, 17);
+            label.setFont(font);
+            tvFriends.setPlaceholder(label);
+        }
+        else {
+            showUsers();
+            tvFriends.setFixedCellSize(125);
+        }
     }
 
     public void onSeeFriendsButtonClick() {
@@ -171,7 +188,6 @@ public class UserDetailsController implements Initializable {
 
     public void onCloseTableButtonClick() {
         btnCloseTable.setVisible(true);
-        btnCloseTable.setText("Close");
         btnCloseTable.setCursor(Cursor.HAND);
         btnCloseTable.setOnMouseClicked(event -> {
             tvFriends.setVisible(false);
@@ -180,6 +196,24 @@ public class UserDetailsController implements Initializable {
     }
 
     public void onMessageButtonClick() {
+        btnMessage.setVisible(false);
+        tfSend.setVisible(true);
+        btnSendProfileMessage.setVisible(true);
+        btnSendProfileMessage.setOnAction(event->{
+            if(!tfSend.getText().isEmpty()) {
+                Message message = new Message(loggedUser, List.of(foundUser), tfSend.getText(), LocalDateTime.now());
+                try {
+                    FoundUserController.messageService.saveMessage(message);
+                    AlertUtil.showNotification("Your message has been sent!");
+                    tfSend.clear();
+                    btnMessage.setVisible(true);
+                    tfSend.setVisible(false);
+                    btnSendProfileMessage.setVisible(false);
+                } catch (IllegalFriendshipException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -20,7 +21,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnCloseTable" layoutX="82.0" layoutY="345.0" mnemonicParsing="false" stylesheets="@../css/button-yellow-style.css" text="Close">
+            <Button fx:id="btnCloseTable" layoutX="13.0" layoutY="347.0" mnemonicParsing="false" stylesheets="@../css/button-yellow-style.css">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -34,6 +35,11 @@
                         <Font name="Bell MT Italic" size="35.0" />
                     </font>
                 </Label>
+            <Button fx:id="btnSendProfileMessage" layoutX="342.0" layoutY="267.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="38.0" stylesheets="@../css/buttons-pink.css">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
                 <Button fx:id="btnSeeFriends" layoutX="155.0" layoutY="228.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: EBD8B7;" stylesheets="@../css/button-yellow-style.css" text="See Friends">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -46,8 +52,13 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
+            <TextField fx:id="tfSend" layoutX="262.0" layoutY="226.0" opacity="0.76" prefHeight="26.0" prefWidth="122.0" promptText="Type your message">
+               <font>
+                  <Font name="Bell MT Italic" size="13.0" />
+               </font>
+            </TextField>
             <ImageView fx:id="imgViewProfilePicture" fitHeight="158.0" fitWidth="218.0" layoutX="131.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
-            <TableView fx:id="tvFriends" layoutX="-3.0" prefHeight="400.0" prefWidth="403.0" stylesheets="@../css/table-format-initializer.css">
+            <TableView fx:id="tvFriends" layoutX="-2.0" prefHeight="400.0" prefWidth="403.0" stylesheets="@../css/table-format-initializer.css">
               <columns>
                 <TableColumn fx:id="firstNameCol" minWidth="200.0" prefWidth="200.0" text="First Name" />
                 <TableColumn fx:id="lastNameCol" minWidth="200.0" prefWidth="200.0" text="Last Name" />
