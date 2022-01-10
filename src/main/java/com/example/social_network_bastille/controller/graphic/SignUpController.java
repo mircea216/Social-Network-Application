@@ -1,5 +1,7 @@
 package com.example.social_network_bastille.controller.graphic;
 
+import com.example.social_network_bastille.controller.graphic.alert.AlertUtil;
+import com.example.social_network_bastille.domain.validators.EmailValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -30,11 +32,12 @@ public class SignUpController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         btnSignUp.setOnAction(event -> {
             if (!tfFirstName.getText().trim().isEmpty() && !tfLastName.getText().trim().isEmpty()
-                    && !tfUserNameEmail.getText().trim().isEmpty() && !pfPassword.getText().trim().isEmpty()) {
+                    && !tfUserNameEmail.getText().trim().isEmpty() && !pfPassword.getText().trim().isEmpty() &&
+                    EmailValidator.isValidEmailAddress(tfUserNameEmail.getText())) {
                 DatabaseUserConnection.signUpUser(event, tfFirstName.getText(), tfLastName.getText(),
                         tfUserNameEmail.getText(), pfPassword.getText());
-            } else {
-                showError("Please introduce all the information to sign up!");
+            } else{
+                showError("Please introduce valid information to sign up!");
             }
         });
         btnLogIn.setOnAction(event -> DatabaseUserConnection.changeScene(event,
